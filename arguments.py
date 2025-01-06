@@ -21,7 +21,7 @@ def parse_args():
     # General settings
     parser.add_argument('--gpus',
                         type=int,
-                        default=4,
+                        default=1,
                         help='Number of GPUs to use')
     parser.add_argument(
         '--dataset',
@@ -32,11 +32,11 @@ def parse_args():
         '--xid',
         type=str,
         default='',
-        help='Additional information to embed in the experiment name')
+        help='要嵌入到实验名称中的附加信息Additional information to embed in the experiment name')
     parser.add_argument('--resolution',
                         type=int,
                         default=128,
-                        help='Rendering resolution')
+                        help='渲染分辨率Rendering resolution')
     parser.add_argument('--batch_size',
                         type=int,
                         default=32,
@@ -44,21 +44,21 @@ def parse_args():
     parser.add_argument('--run_inversion', action='store_true')
     parser.add_argument('--resume_from',
                         type=str,
-                        help='Load specified unconditional checkpoint')
+                        help='加载指定的无条件检查点Load specified unconditional checkpoint')
     parser.add_argument('--root_path',
                         type=str,
                         default='.',
-                        help='Root path for checkpoints')
+                        help='检查点的根路径Root path for checkpoints')
     parser.add_argument('--data_path',
                         type=str,
                         default='datasets',
-                        help='Root path for datasets')
+                        help='数据集的根路径Root path for datasets')
 
     # Training settings
     parser.add_argument('--iterations',
                         type=int,
                         default=300000,
-                        help='Number of training iterations for generator')
+                        help='生成器的训练迭代次数Number of training iterations for generator')
     parser.add_argument('--lr_g',
                         type=float,
                         default=0.0025,
@@ -69,40 +69,40 @@ def parse_args():
                         help='Learning rate for discriminator')
     parser.add_argument('--dual_discriminator',
                         action='store_true',
-                        help='Use dual discriminator in encoder-mode')
+                        help='在编码器模式下使用双鉴别器Use dual discriminator in encoder-mode')
     parser.add_argument('--dual_discriminator_l1',
                         action='store_true',
-                        help='Use L1+discriminator in encoder-mode')
+                        help='在编码器模式下使用L1+鉴别器Use L1+discriminator in encoder-mode')
     parser.add_argument('--dual_discriminator_mse',
                         action='store_true',
-                        help='Use MSE+discriminator in encoder-mode')
+                        help='在编码器模式下使用MSE+鉴别器Use MSE+discriminator in encoder-mode')
     parser.add_argument('--r1',
                         type=float,
                         default=5.,
-                        help='R1 regularization strength')
+                        help='R1正则化强度R1 regularization strength')
     parser.add_argument('--tv',
                         type=float,
                         default=0.5,
-                        help='Total variation regularization strength')
+                        help='总变异正则化强度Total variation regularization strength')
     parser.add_argument('--entropy',
                         type=float,
                         default=0.05,
-                        help='Entropy regularization strength')
+                        help='熵正则化强度Entropy regularization strength')
     parser.add_argument('--eikonal',
                         type=float,
                         default=0.1,
-                        help='Eikonal loss strength')
+                        help='Eikonal损失强度Eikonal loss strength')
     parser.add_argument('--supervise_alpha',
                         action='store_true',
-                        help='Include alpha channel in discriminator input')
+                        help='在鉴别器输入中包括阿尔法通道Include alpha channel in discriminator input')
     parser.add_argument('--conditional_pose',
                         type=bool,
                         default=True,
-                        help='Condition discriminator on pose')
+                        help='姿势条件鉴别器Condition discriminator on pose')
     parser.add_argument('--augment_p',
                         type=float,
                         default=0,
-                        help='Maximum augmentation probability for ADA')
+                        help='ADA的最大增强概率Maximum augmentation probability for ADA')
     parser.add_argument('--augment_ada', action='store_true', help='Enable ADA')
     parser.add_argument('--ada_target',
                         type=float,
@@ -124,16 +124,16 @@ def parse_args():
     parser.add_argument('--fine_sampling',
                         type=bool,
                         default=True,
-                        help='Enable two-pass coarse-fine sampling')
+                        help='启用两次粗略-精细采样Enable two-pass coarse-fine sampling')
     parser.add_argument(
         '--attention_values',
         type=int,
         default=10,
-        help='Number of values in color mapping (set >0 to enable)')
+        help='颜色映射值（设置>0以启用）Number of values in color mapping (set >0 to enable)')
     parser.add_argument('--use_sdf',
                         type=bool,
                         default=True,
-                        help='Enable SDF representation')
+                        help='启用SDF表示Enable SDF representation')
     parser.add_argument('--use_encoder',
                         action='store_true',
                         help='Train encoder-based mode')

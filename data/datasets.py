@@ -758,3 +758,47 @@ class CARLADataset(torch.utils.data.Dataset):
             'image': img.squeeze(0),
             'pose': torch.FloatTensor(self.poses[idx]),
         }
+
+class EarDataset(torch.utils.data.Dataset):
+
+    def __init__(self, dataset_path, image_size, upscale=False):
+        self.img_paths = sorted(glob.glob(os.path.join(dataset_path, '*.jpg')))
+        print(len(self.img_paths), 'images')
+
+        self.image_size = image_size
+        self.upscale = 2 if upscale else 1
+
+        # Load poses
+        poses = []
+        for img_path in self.img_paths:
+            pose_path = os.path.join(
+                dataset_path, 'carla_poses',
+                os.path.basename(img_path).replace('.png', '_extrinsics.npy'))
+            poses.append(np.load(pose_path))
+        self.poses = np.zeros((len(poses), 4, 4), dtype=np.float32)
+        self.poses[:, :3] = np.stack(poses, axis=0)
+        self.poses[:, 3, 3] = 1
+
+        intrinsics = np.load(
+            os.path.join(dataset_path, 'carla_poses', 'intrinsics.npy'))
+        self.c = intrinsics[0, 0, :2, 2].astype(np.float32)
+        self.focal = intrinsics[0, 0, 0, 0].astype(np.float32)
+
+    def __len__(self):
+        return len(self.img_paths)
+
+    def __getitem__(self, idx):
+        rgb_path = self.img_paths[idx]
+        img = imageio.imread(rgb_path)[..., :3]
+        original_res = img.shape[0]
+        img = img.astype(np.float32) / 255 * 2 - 1
+        img = torch.FloatTensor(img).permute(2, 0, 1)
+        img = F.interpolate(img.unsqueeze(0),
+                            size=self.image_size * self.upscale,
+                            mode='area')
+        return {
+            'focal': torch.FloatTensor([self.focal.item()]) / original_res,
+            'c': torch.FloatTensor(self.c) / original_res,
+            'image': img.squeeze(0),
+            'pose': torch.FloatTensor(self.poses[idx]),
+        }

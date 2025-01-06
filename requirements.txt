@@ -2,7 +2,7 @@ torch
 torchvision
 imageio
 opencv-python
-tensorboard
+tensorboard==2.12.2
 numpy
 scipy
 scikit-image

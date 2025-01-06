@@ -163,7 +163,7 @@ class DatasetSplitView:
                 if parent_attr is None:
                     outputs.append(None)
                 else:
-                    outputs.append(parent_attr[self.idx].to(parent.device))
+                    outputs.append(parent_attr[self.idx].to(self.parent.device))
             return outputs
         else:
             parent_attr = getattr(self.parent, attr)
